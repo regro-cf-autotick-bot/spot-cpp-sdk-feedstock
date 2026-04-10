@@ -1,7 +1,7 @@
 context:
   name: spot-cpp-sdk
   version: 5.1.4
-  build_number: 1
+  build_number: 2
 
 recipe:
   name: ${{ name }}-split
@@ -34,20 +34,12 @@ outputs:
             - export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-declarations"
             # Configure C++ project.
             - echo ${CMAKE_ARGS}
-            - cmake -S cpp/ -B build/
-              ${CMAKE_ARGS}
-              -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON
-              -GNinja
+            - cmake -S cpp/ -B build/ ${CMAKE_ARGS} -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON -GNinja
         - if: win
           then:
             # Configure C++ project.
             - echo %CMAKE_ARGS%
-            - cmake -S cpp/ -B build/
-              ${CMAKE_ARGS}
-              -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON
-              -DCMAKE_CXX_COMPILER_WORKS=ON
-              -DCMAKE_CXX_FLAGS="%CXXFLAGS% /DNOMINMAX /wd4267 /wd4996 /WX- /EHsc"
-              -GNinja
+            - cmake -S cpp/ -B build/ ${CMAKE_ARGS} -DCMAKE_FIND_PACKAGE_PREFER_CONFIG=ON -DCMAKE_CXX_COMPILER_WORKS=ON -DCMAKE_CXX_FLAGS="%CXXFLAGS% /DNOMINMAX /wd4267 /wd4996 /WX- /EHsc" -GNinja
         # Build and install C++ project.
         - cmake --build build/ --config Release
         - cmake --install build/ --config Release
